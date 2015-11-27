@@ -1,259 +1,103 @@
 package com.yuxh.mysky.entry;
 
-import java.util.List;
+public class User {
+    private String id;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+    private String name;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-/**
- * TODO 在此加入类描述
- * @copyright {@link 9iu.org}
- * @author springrain<Auto generate>
- * @version  2013-07-06 16:03:00
- * @see org.springrain.system.entity.User
- */
-@Table(name="t_user")
-@LuceneSearch
-public class User  extends BaseEntity {
-	
-	private static final long serialVersionUID = 1L;
+    private String account;
 
-	/**
-	 * 编号
-	 */
-	private java.lang.String id;
-	/**
-	 * 姓名
-	 */
-	private java.lang.String name;
-	/**
-	 * 账号
-	 */
-	private java.lang.String account;
-	/**
-	 * 密码
-	 */
-	private java.lang.String password;
-	
-	/**
-	 * 性别
-	 */
-	private java.lang.String sex;
+    private String password;
 
-	/**
-	 * 手机号码
-	 */
-	private java.lang.String mobile;
-	/**
-	 * 邮箱
-	 */
-	private java.lang.String email;
-	
-	/**
-	 * 是否有效,是/否/离职
-	 */
-	private java.lang.String state;
-	/**
-	 * 微信Id
-	 */
-	private String weixinId;
-	
-	/**
-	 * 用户类型,0:后台管理员,1是教师,2是家长,3是学生
-	 */
-	private Integer userType;
-	
-	
-	//columns END 数据库字段结束
-	
+    private String sex;
 
+    private String mobile;
 
-	//用户所有的部门
-	private List<Org> userOrgs;
-	//用户的所有角色
-	private List<Role> userRoles;
-	
-	
-	
+    private String email;
 
-	
+    private String weixinid;
 
-	//concstructor
-	public User(){
-	}
+    private Integer usertype;
 
-	public User(
-		java.lang.String id
-	){
-		this.id = id;
-	}
+    private String state;
 
-	//get and set
-		public void setId(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.id = value;
-		}
-		
-		@Id
-	     @WhereSQL(sql="id=:User_id")
-		@LuceneField
-		public java.lang.String getId() {
-			return this.id;
-		}
-		public void setName(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.name = value;
-		}
-		
-	     @WhereSQL(sql="name=:User_name")
-	     @LuceneField
-		public java.lang.String getName() {
-			return this.name;
-		}
-		
-		public void setAccount(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.account = value;
-		}
-		
-	     @WhereSQL(sql="account=:User_account")
-		public java.lang.String getAccount() {
-			return this.account;
-		}
-		public void setPassword(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.password = value;
-		}
-		
-	     @WhereSQL(sql="password=:User_password")
-		public java.lang.String getPassword() {
-			return this.password;
-		}
-		
-		
-		public void setSex(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.sex = value;
-		}
-		
-	     @WhereSQL(sql="sex=:User_sex")
-		public java.lang.String getSex() {
-			return this.sex;
-		}
-		
-		public void setMobile(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.mobile = value;
-		}
-		
-	     @WhereSQL(sql="mobile=:User_mobile")
-		public java.lang.String getMobile() {
-			return this.mobile;
-		}
-		public void setEmail(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.email = value;
-		}
-		
-	     @WhereSQL(sql="eamil=:User_email")
-		public java.lang.String getEmail() {
-			return this.email;
-		}
-		
-		public void setState(java.lang.String value) {
-			    if(StringUtils.isNotBlank(value)){
-				 value=value.trim();
-				}
-			this.state = value;
-		}
-		
-	     @WhereSQL(sql="state=:User_state")
-		public java.lang.String getState() {
-			return this.state;
-		}
-	     @WhereSQL(sql="userType=:User_userType")
-		public Integer getUserType() {
-			return userType;
-		}
+    public String getId() {
+        return id;
+    }
 
-		public void setUserType(Integer userType) {
-			this.userType = userType;
-		}
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
 
-		public String toString() {
-			return new StringBuffer()
-			.append("编号[").append(getId()).append("],")
-			.append("姓名[").append(getName()).append("],")
-			.append("账号[").append(getAccount()).append("],")
-			.append("密码[").append(getPassword()).append("],")
-			.append("性别[").append(getSex()).append("],")
-			.append("手机号码[").append(getMobile()).append("],")
-			.append("邮箱[").append(getEmail()).append("],")
-			.append("是否有效,是/否/离职[").append(getState()).append("],")
-			.toString();
-		}
-		
-		public int hashCode() {
-			return new HashCodeBuilder()
-				.append(getId())
-				.toHashCode();
-		}
-		
-		public boolean equals(Object obj) {
-			if(obj instanceof User == false) return false;
-			if(this == obj) return true;
-			User other = (User)obj;
-			return new EqualsBuilder()
-				.append(getId(),other.getId())
-				.isEquals();
-		}
+    public String getName() {
+        return name;
+    }
 
-		@Transient
-		public List<Org> getUserOrgs() {
-			return userOrgs;
-		}
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-		public void setUserOrgs(List<Org> userOrgs) {
-			this.userOrgs = userOrgs;
-		}
+    public String getAccount() {
+        return account;
+    }
 
-		@Transient
-		public List<Role> getUserRoles() {
-			return userRoles;
-		}
+    public void setAccount(String account) {
+        this.account = account == null ? null : account.trim();
+    }
 
-		public void setUserRoles(List<Role> userRoles) {
-			this.userRoles = userRoles;
-		}
+    public String getPassword() {
+        return password;
+    }
 
-		public String getWeixinId() {
-			return weixinId;
-		}
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
 
-		public void setWeixinId(String weixinId) {
-			this.weixinId = weixinId;
-		}
-	
-	
-	
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getWeixinid() {
+        return weixinid;
+    }
+
+    public void setWeixinid(String weixinid) {
+        this.weixinid = weixinid == null ? null : weixinid.trim();
+    }
+
+    public Integer getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(Integer usertype) {
+        this.usertype = usertype;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
 }
-
-	

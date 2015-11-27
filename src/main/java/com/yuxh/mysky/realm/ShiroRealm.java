@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import com.yuxh.mysky.entry.ShiroUser;
 import com.yuxh.mysky.entry.User;
 import com.yuxh.mysky.service.ShiroService;
+import com.yuxh.mysky.service.UserService;
 
 @Component("shiroRealm")
 public class ShiroRealm extends AuthorizingRealm {
@@ -34,6 +35,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
 	@Resource
 	private ShiroService shiroService;
+	
+	@Resource
+	private UserService userService;
 
 	@Resource
 	private CacheManager shiroCacheManager;
@@ -54,7 +58,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	// 授权
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-
+		System.out.println("授权方法执行");
 		// 因为非正常退出，即没有显式调用 SecurityUtils.getSubject().logout()
 		// (可能是关闭浏览器，或超时)，但此时缓存依旧存在(principals)，所以会自己跑到授权方法里。
 		if (!SecurityUtils.getSubject().isAuthenticated()) {
@@ -85,6 +89,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	// 认证
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		System.out.println("1.认证方法执行");
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 		/*
 		 * String pwd = new String(upToken.getPassword()); if
@@ -93,8 +98,10 @@ public class ShiroRealm extends AuthorizingRealm {
 		// 调用业务方法
 		User user = null;
 		String userName = upToken.getUsername();
+		System.out.println("2.申请认证的name是："+userName);
 		try {
-			user = shiroService.findLoginUser(userName, null);
+			user = userService.getUserByUsername(userName);
+			System.out.println("3.获取到的user："+user);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new AuthenticationException(e);
@@ -107,7 +114,10 @@ public class ShiroRealm extends AuthorizingRealm {
 			// byte[] salt = EncodeUtils.decodeHex(user.getSalt());
 
 			// Session session = SecurityUtils.getSubject().getSession(false);
+			user.setPassword(MD5Util.MD5(user.getPassword()));
+			System.out.println(user.getPassword());
 			AuthenticationInfo authinfo = new SimpleAuthenticationInfo(new ShiroUser(user), user.getPassword(), getName());
+			System.out.println("是否成功");
 			// Cache<Object, Object> cache =
 			// shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
 			// cache.put(GlobalStatic.authenticationCacheName+"-"+userName,
