@@ -26,6 +26,7 @@
 			<value>
 				/login.jsp* = anon
 				/index.jsp* = authc
+				/login.do* = authc
 				/message.jsp=anon
 				/favicon.ico = anon
 			</value>
