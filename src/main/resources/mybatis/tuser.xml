@@ -23,11 +23,11 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
   
-    <select id="getUserByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="getUserByUserAccname" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from t_user
-    where id = #{name,jdbcType=VARCHAR}
+    where id = #{account,jdbcType=VARCHAR}
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >

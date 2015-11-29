@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +31,34 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
+		System.out.println("过滤器启动");
 		// upm with shiro subject/principal
 		Subject user = SecurityUtils.getSubject();
 		User shiroUser = (User) user.getPrincipal();
+		if(shiroUser==null){
+			try {
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
 
 		// get sso session
 		Session session = user.getSession(false);
+		if(session==null){
+			System.out.println("session为空");
+			try {
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
 		Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
+		if(cache==null){
+			System.out.println("cache为空");
+		}
 		Object cachedSession = cache.get(GlobalStatic.authenticationCacheName + "-" + shiroUser.getAccount());
 		if (cachedSession == null) {
 			user.logout();

@@ -35,7 +35,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
 	@Resource
 	private ShiroService shiroService;
-	
+
 	@Resource
 	private UserService userService;
 
@@ -98,10 +98,10 @@ public class ShiroRealm extends AuthorizingRealm {
 		// 调用业务方法
 		User user = null;
 		String userName = upToken.getUsername();
-		System.out.println("2.申请认证的name是："+userName);
+		System.out.println("2.申请认证的name是：" + userName);
 		try {
-			user = userService.getUserByUsername(userName);
-			System.out.println("3.获取到的user："+user);
+			user = userService.getUserByUserAccname(userName);
+			System.out.println("3.获取到的user：" + user);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new AuthenticationException(e);
@@ -109,19 +109,16 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		if (user != null) {
 			// 要放在作用域中的东西，请在这里进行操作
-			// SecurityUtils.getSubject().getSession().setAttribute("c_user",
-			// user);
+			SecurityUtils.getSubject().getSession().setAttribute("t_user", user);
 			// byte[] salt = EncodeUtils.decodeHex(user.getSalt());
 
-			// Session session = SecurityUtils.getSubject().getSession(false);
+			Session session = SecurityUtils.getSubject().getSession(false);
 			user.setPassword(MD5Util.MD5(user.getPassword()));
 			System.out.println(user.getPassword());
 			AuthenticationInfo authinfo = new SimpleAuthenticationInfo(new ShiroUser(user), user.getPassword(), getName());
 			System.out.println("是否成功");
-			// Cache<Object, Object> cache =
-			// shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
-			// cache.put(GlobalStatic.authenticationCacheName+"-"+userName,
-			// session.getId());
+			 Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
+			 cache.put(GlobalStatic.authenticationCacheName+"-"+userName, session.getId());
 			return authinfo;
 		}
 		// 认证没有通过

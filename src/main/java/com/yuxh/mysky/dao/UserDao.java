@@ -16,5 +16,5 @@ public interface UserDao {
 
 	public int updateByPrimaryKey(User record);
 
-	public User getUserByUsername(String userName);
+	public User getUserByUserAccname(String accName);
 }
