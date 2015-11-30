@@ -41,7 +41,7 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 			} catch (ServletException e) {
 				e.printStackTrace();
 			}
-			return false;
+			return true;
 		}
 
 		// get sso session
