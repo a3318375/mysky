@@ -15,7 +15,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cas.CasRealm;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -117,8 +116,8 @@ public class ShiroRealm extends AuthorizingRealm {
 			System.out.println(user.getPassword());
 			AuthenticationInfo authinfo = new SimpleAuthenticationInfo(new ShiroUser(user), user.getPassword(), getName());
 			System.out.println("是否成功");
-			 Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
-			 cache.put(GlobalStatic.authenticationCacheName+"-"+userName, session.getId());
+			Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
+			cache.put(GlobalStatic.authenticationCacheName + "-" + userName, session.getId());
 			return authinfo;
 		}
 		// 认证没有通过

@@ -1,5 +1,6 @@
 package com.yuxh.mysky.realm;
 
+import com.yuxh.mysky.entry.ShiroUser;
 import com.yuxh.mysky.entry.User;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +35,7 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 		System.out.println("过滤器启动");
 		// upm with shiro subject/principal
 		Subject user = SecurityUtils.getSubject();
-		User shiroUser = (User) user.getPrincipal();
+		ShiroUser shiroUser = (ShiroUser) user.getPrincipal();
 		if(shiroUser==null){
 			try {
 				request.getRequestDispatcher("/login.jsp").forward(request, response);

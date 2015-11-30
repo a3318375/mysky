@@ -1,4 +1,4 @@
-package com.yuxh.mysky.realm;
+package com.yuxh.mysky.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +10,6 @@ import java.util.Set;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.CollectionUtils;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.SerializeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,4 +189,5 @@ public class RedisCache<K, V> implements Cache<K, V> {
 			throw new CacheException(t);
 		}
 	}
+
 }

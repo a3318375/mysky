@@ -28,7 +28,6 @@
 				/*=shirofilter
 				/login.jsp* = anon
 				/index.jsp* = authc
-				/login.do* = authc
 				/message.jsp=anon
 				/favicon.ico = anon
 			</value>
@@ -41,10 +40,10 @@
 		</property>
 	</bean>
 	<!-- 单机session -->
-	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" /> 
+<!-- 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" /> -->
 	<!-- session 集群 -->
-<!-- 	<bean id="shiroCacheManager" class="com.yuxh.mysky.realm.RedisCacheManager"> -->
- 		<!--在applicationContext-redis.xml里头声明 --> 
+<!-- 	<bean id="shiroCacheManager" class="com.yuxh.mysky.cache.RedisCacheManager"> -->
+		<!--在applicationContext-redis.xml里头声明 -->
 <!-- 		<property name="cached" ref="redisCacheService" /> -->
 <!-- 	</bean> -->
 
@@ -55,14 +54,14 @@
 		<!-- session 管理器 -->
 		<property name="sessionManager" ref="sessionManager" />
 		<!-- 缓存管理器 -->
-		<property name="cacheManager" ref="shiroCacheManager" />
+		<property name="cacheManager" ref="redisCacheManager" />
 	</bean>
 	<!-- session管理器 -->
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
 		<!-- 超时时间 -->
 		<property name="globalSessionTimeout" value="1800000" />
 		<!-- session存储的实现 -->
-		<property name="sessionDAO" ref="shiroSessionDao" />
+		<property name="sessionDAO" ref="redisShiroSessionDAO" />
 		<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
 		<property name="sessionIdCookie" ref="sharesession" />
 		<!-- 定时检查失效的session -->
@@ -77,6 +76,9 @@
 		<property name="path" value="/" />
 	</bean>
 	<!-- session存储的实现 -->
-	<bean id="shiroSessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" />
+	<!-- <bean id="shiroSessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" /> -->
 
+	<bean id="redisShiroSessionDAO" class="com.yuxh.mysky.cache.RedisSessionDAO">
+		<property name="redisManager" ref="redisManager" />
+	</bean>
 </beans>
