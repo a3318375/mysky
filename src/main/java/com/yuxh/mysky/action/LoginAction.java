@@ -18,7 +18,7 @@ import com.yuxh.mysky.service.UserService;
 @RequestMapping("/shiro")
 public class LoginAction {
 
-	@Resource
+	@Resource(name="userService")
 	private UserService userService;
 
 	@RequestMapping("/login")

@@ -2,6 +2,8 @@ package com.yuxh.mysky.cache;
 
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -21,10 +23,6 @@ public class RedisManager {
 	private String password = "";
 	
 	private static JedisPool jedisPool = null;
-	
-	public RedisManager(){
-		
-	}
 	
 	/**
 	 * 初始化方法

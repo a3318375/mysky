@@ -20,26 +20,24 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.yuxh.mysky.entry.ShiroUser;
 import com.yuxh.mysky.entry.User;
-import com.yuxh.mysky.service.ShiroService;
 import com.yuxh.mysky.service.UserService;
 
-@Component("shiroRealm")
+
 public class ShiroRealm extends AuthorizingRealm {
 
 	public Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Resource
-	private ShiroService shiroService;
+//	@Resource
+//	private ShiroService shiroService;
 
-	@Resource
+	@Resource(name="userService")
 	private UserService userService;
 
-	@Resource
-	private CacheManager shiroCacheManager;
+	@Resource(name="redisCacheManager")
+	private CacheManager redisCacheManager;
 
 	public static final String HASH_ALGORITHM = "MD5";
 	public static final int HASH_INTERATIONS = 1;
@@ -76,8 +74,8 @@ public class ShiroRealm extends AuthorizingRealm {
 		// 添加角色及权限信息
 		SimpleAuthorizationInfo sazi = new SimpleAuthorizationInfo();
 		try {
-			sazi.addRoles(shiroService.getRolesAsString(userId));
-			sazi.addStringPermissions(shiroService.getPermissionsAsString(userId));
+//			sazi.addRoles(shiroService.getRolesAsString(userId));
+//			sazi.addStringPermissions(shiroService.getPermissionsAsString(userId));
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -108,15 +106,15 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		if (user != null) {
 			// 要放在作用域中的东西，请在这里进行操作
-			SecurityUtils.getSubject().getSession().setAttribute("t_user", user);
 			// byte[] salt = EncodeUtils.decodeHex(user.getSalt());
 
-			Session session = SecurityUtils.getSubject().getSession(false);
 			user.setPassword(MD5Util.MD5(user.getPassword()));
-			System.out.println(user.getPassword());
+			Session session = SecurityUtils.getSubject().getSession(false);
+			session.setAttribute("t_user", user);
+
 			AuthenticationInfo authinfo = new SimpleAuthenticationInfo(new ShiroUser(user), user.getPassword(), getName());
 			System.out.println("是否成功");
-			Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
+			Cache<Object, Object> cache = redisCacheManager.getCache(GlobalStatic.authenticationCacheName);
 			cache.put(GlobalStatic.authenticationCacheName + "-" + userName, session.getId());
 			return authinfo;
 		}

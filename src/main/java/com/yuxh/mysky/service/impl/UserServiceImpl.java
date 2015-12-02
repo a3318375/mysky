@@ -11,7 +11,7 @@ import com.yuxh.mysky.service.UserService;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-	@Resource
+	@Resource(name="userDao")
 	private UserDao userDao;
 
 	public User getUserById(String userId) {

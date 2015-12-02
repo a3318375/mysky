@@ -30,6 +30,7 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 	@Resource
 	private CacheManager shiroCacheManager;
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
 		System.out.println("过滤器启动");
@@ -44,9 +45,10 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 			}
 			return true;
 		}
-
 		// get sso session
 		Session session = user.getSession(false);
+		User suser = (User) session.getAttribute("t_user");
+		System.out.println("获取用户成功：" + suser.getName());
 		if(session==null){
 			System.out.println("session为空");
 			try {
@@ -54,7 +56,7 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 			} catch (ServletException e) {
 				e.printStackTrace();
 			}
-			return false;
+			return true;
 		}
 		Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
 		if(cache==null){

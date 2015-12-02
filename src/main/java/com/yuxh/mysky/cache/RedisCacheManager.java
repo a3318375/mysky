@@ -3,6 +3,8 @@ package com.yuxh.mysky.cache;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Resource;
+
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
@@ -10,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-@Service("shiroCacheManager")
+@Service("redisCacheManager")
 public class RedisCacheManager implements CacheManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(RedisCacheManager.class);
@@ -18,6 +20,7 @@ public class RedisCacheManager implements CacheManager {
 	// fast lookup by name map
 	private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<String, Cache>();
 
+	@Resource(name="redisManager")
 	private RedisManager redisManager;
 
 	/**
@@ -47,7 +50,6 @@ public class RedisCacheManager implements CacheManager {
 	@Override
 	public <K, V> Cache<K, V> getCache(String name) throws CacheException {
 		logger.debug("获取名称为: " + name + " 的RedisCache实例");
-
 		Cache c = caches.get(name);
 
 		if (c == null) {
@@ -62,14 +64,6 @@ public class RedisCacheManager implements CacheManager {
 			caches.put(name, c);
 		}
 		return c;
-	}
-
-	public RedisManager getRedisManager() {
-		return redisManager;
-	}
-
-	public void setRedisManager(RedisManager redisManager) {
-		this.redisManager = redisManager;
 	}
 
 }

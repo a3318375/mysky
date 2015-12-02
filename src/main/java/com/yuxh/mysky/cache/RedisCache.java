@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.CollectionUtils;
@@ -20,7 +22,8 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	/**
 	 * The wrapped Jedis instance.
 	 */
-	private RedisManager cache;
+	@Resource(name="redisManager")
+	private RedisManager redisManager;
 
 	/**
 	 * The Redis key prefix for the sessions
@@ -53,7 +56,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 		if (cache == null) {
 			throw new IllegalArgumentException("Cache argument cannot be null.");
 		}
-		this.cache = cache;
+		this.redisManager = cache;
 	}
 
 	/**
@@ -95,7 +98,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 			if (key == null) {
 				return null;
 			} else {
-				byte[] rawValue = cache.get(getByteKey(key));
+				byte[] rawValue = redisManager.get(getByteKey(key));
 				@SuppressWarnings("unchecked")
 				V value = (V) SerializeUtils.deserialize(rawValue);
 				return value;
@@ -110,7 +113,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	public V put(K key, V value) throws CacheException {
 		logger.debug("根据key从存储 key [" + key + "]");
 		try {
-			cache.set(getByteKey(key), SerializeUtils.serialize(value));
+			redisManager.set(getByteKey(key), SerializeUtils.serialize(value));
 			return value;
 		} catch (Throwable t) {
 			throw new CacheException(t);
@@ -122,7 +125,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 		logger.debug("从redis中删除 key [" + key + "]");
 		try {
 			V previous = get(key);
-			cache.del(getByteKey(key));
+			redisManager.del(getByteKey(key));
 			return previous;
 		} catch (Throwable t) {
 			throw new CacheException(t);
@@ -133,7 +136,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	public void clear() throws CacheException {
 		logger.debug("从redis中删除所有元素");
 		try {
-			cache.flushDB();
+			redisManager.flushDB();
 		} catch (Throwable t) {
 			throw new CacheException(t);
 		}
@@ -142,7 +145,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	@Override
 	public int size() {
 		try {
-			Long longSize = new Long(cache.dbSize());
+			Long longSize = new Long(redisManager.dbSize());
 			return longSize.intValue();
 		} catch (Throwable t) {
 			throw new CacheException(t);
@@ -153,7 +156,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	@Override
 	public Set<K> keys() {
 		try {
-			Set<byte[]> keys = cache.keys(this.keyPrefix + "*");
+			Set<byte[]> keys = redisManager.keys(this.keyPrefix + "*");
 			if (CollectionUtils.isEmpty(keys)) {
 				return Collections.emptySet();
 			} else {
@@ -171,7 +174,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 	@Override
 	public Collection<V> values() {
 		try {
-			Set<byte[]> keys = cache.keys(this.keyPrefix + "*");
+			Set<byte[]> keys = redisManager.keys(this.keyPrefix + "*");
 			if (!CollectionUtils.isEmpty(keys)) {
 				List<V> values = new ArrayList<V>(keys.size());
 				for (byte[] key : keys) {

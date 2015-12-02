@@ -56,6 +56,9 @@
 		<!-- 缓存管理器 -->
 		<property name="cacheManager" ref="redisCacheManager" />
 	</bean>
+	
+	<bean id="shiroRealm" class="com.yuxh.mysky.realm.ShiroRealm"></bean>
+	
 	<!-- session管理器 -->
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
 		<!-- 超时时间 -->
@@ -79,6 +82,6 @@
 	<!-- <bean id="shiroSessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" /> -->
 
 	<bean id="redisShiroSessionDAO" class="com.yuxh.mysky.cache.RedisSessionDAO">
-		<property name="redisManager" ref="redisManager" />
+		<property name="redisManager" ref="redisManager"/>
 	</bean>
 </beans>
