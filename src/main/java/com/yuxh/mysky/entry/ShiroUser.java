@@ -14,7 +14,7 @@ public class ShiroUser implements Serializable{
 	/**
 	 * 编号
 	 */
-	private java.lang.String id;
+	private Integer id;
 	/**
 	 * 姓名
 	 */
@@ -84,12 +84,16 @@ public class ShiroUser implements Serializable{
 			.toHashCode();
 	}
 
-	public java.lang.String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(java.lang.String id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public java.lang.String getName() {

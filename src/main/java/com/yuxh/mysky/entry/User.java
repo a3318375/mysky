@@ -3,7 +3,7 @@ package com.yuxh.mysky.entry;
 import java.io.Serializable;
 
 public class User implements Serializable{
-    private String id;
+    private Integer id;
 
     private String name;
 
@@ -23,15 +23,15 @@ public class User implements Serializable{
 
     private String state;
 
-    public String getId() {
-        return id;
-    }
+    public Integer getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 

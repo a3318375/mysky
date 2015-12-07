@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuxh.mysky.dao.UserDao" >
   <resultMap id="BaseResultMap" type="com.yuxh.mysky.entry.User" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="account" property="account" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -20,7 +20,7 @@
     select 
     <include refid="Base_Column_List" />
     from t_user
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   
     <select id="getUserByUserAccname" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -32,14 +32,14 @@
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_user
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yuxh.mysky.entry.User" >
     insert into t_user (id, name, account, 
       password, sex, mobile, 
       email, weixinId, userType, 
       state)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{weixinid,jdbcType=VARCHAR}, #{usertype,jdbcType=INTEGER}, 
       #{state,jdbcType=VARCHAR})
@@ -80,7 +80,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
+        #{id,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -142,7 +142,7 @@
         state = #{state,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yuxh.mysky.entry.User" >
     update t_user
@@ -155,6 +155,6 @@
       weixinId = #{weixinid,jdbcType=VARCHAR},
       userType = #{usertype,jdbcType=INTEGER},
       state = #{state,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
