@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class User implements Serializable{
     private Integer id;
 
-    private String name;
+    private String username;
 
-    private String account;
+    private String name;
 
     private String password;
 
@@ -23,7 +23,15 @@ public class User implements Serializable{
 
     private String state;
 
-    public Integer getId() {
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
@@ -37,14 +45,6 @@ public class User implements Serializable{
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
     }
 
     public String getPassword() {

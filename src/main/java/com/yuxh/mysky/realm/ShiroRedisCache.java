@@ -64,7 +64,7 @@ public V get(K key) throws CacheException {
 
 @Override
 public V put(K key, V value) throws CacheException {
-	logger.debug("根据key从存储 key [" + key + "]");
+	logger.info("ShiroRedisCache根据key从存储 key [" + key + "]");
 	 try {
 		 	cached.updateHashCached(getByteName(),getByteKey(key), SerializeUtil.serialize(value),null);
             return value;

@@ -111,7 +111,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
 	@Override
 	public V put(K key, V value) throws CacheException {
-		logger.debug("根据key从存储 key [" + key + "]");
+		logger.info("RedisCache根据key从存储 key [" + key + "]");
 		try {
 			redisManager.set(getByteKey(key), SerializeUtils.serialize(value));
 			return value;

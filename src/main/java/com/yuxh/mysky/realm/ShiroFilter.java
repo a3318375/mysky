@@ -37,7 +37,9 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 		// upm with shiro subject/principal
 		Subject user = SecurityUtils.getSubject();
 		ShiroUser shiroUser = (ShiroUser) user.getPrincipal();
+		logger.info("过滤器执行2");
 		if(shiroUser==null){
+			logger.info("过滤器执行3");
 			try {
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
 			} catch (ServletException e) {
@@ -46,10 +48,12 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 			return true;
 		}
 		// get sso session
+		logger.info("过滤器执行4");
 		Session session = user.getSession(false);
 		User suser = (User) session.getAttribute("t_user");
 		System.out.println("获取用户成功：" + suser.getName());
 		if(session==null){
+			logger.info("过滤器执行5");
 			System.out.println("session为空");
 			try {
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -58,6 +62,7 @@ public class ShiroFilter extends PermissionsAuthorizationFilter {
 			}
 			return true;
 		}
+		logger.info("过滤器执行6");
 		Cache<Object, Object> cache = shiroCacheManager.getCache(GlobalStatic.authenticationCacheName);
 		if(cache==null){
 			System.out.println("cache为空");

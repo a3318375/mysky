@@ -15,23 +15,23 @@
     select 
     <include refid="Base_Column_List" />
     from t_article
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </select>
   <select id="findAllArticle" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select a.id , a.title , a.context_path, a.create_date, a.user_id,u.name
     from t_article a,t_user u
-    where a.id=u.id
-    limit #{pageNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    where a.user_id=u.id
+    limit #{pageNo}, #{pageSize}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_article
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </delete>
   <insert id="insert" parameterType="com.yuxh.mysky.entry.Article" >
     insert into t_article (id, title, context_path, 
       create_date, user_id)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{contextPath,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER})
+    values (#{id}, #{title,jdbcType=VARCHAR}, #{contextPath,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=VARCHAR}, #{userId})
   </insert>
   <insert id="insertSelective" parameterType="com.yuxh.mysky.entry.Article" >
     insert into t_article
@@ -54,7 +54,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id},
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
@@ -66,7 +66,7 @@
         #{createDate,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+        #{userId},
       </if>
     </trim>
   </insert>
@@ -83,17 +83,17 @@
         create_date = #{createDate,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yuxh.mysky.entry.Article" >
     update t_article
     set title = #{title,jdbcType=VARCHAR},
       context_path = #{contextPath,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+      user_id = #{userId}
+    where id = #{id}
   </update>
 </mapper>

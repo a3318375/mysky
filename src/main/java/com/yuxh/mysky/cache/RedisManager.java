@@ -2,6 +2,8 @@ package com.yuxh.mysky.cache;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import redis.clients.jedis.Jedis;
@@ -9,6 +11,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisManager {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private String host = "127.0.0.1";
 	
@@ -63,6 +67,7 @@ public class RedisManager {
 	 * @return
 	 */
 	public byte[] set(byte[] key,byte[] value){
+		logger.info("redis最底层插入11");
 		Jedis jedis = jedisPool.getResource();
 		try{
 			jedis.set(key,value);
@@ -83,6 +88,7 @@ public class RedisManager {
 	 * @return
 	 */
 	public byte[] set(byte[] key,byte[] value,int expire){
+		logger.info("redis最底层插入22：" +  new String(key) + "::" + new String(value));
 		Jedis jedis = jedisPool.getResource();
 		try{
 			jedis.set(key,value);
